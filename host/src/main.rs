@@ -4,6 +4,7 @@ use methods::{
     FINAL_GUEST_ELF, FINAL_GUEST_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
+use std::fs;
 
 fn main() {
     // Initialize tracing. In order to view logs, run `RUST_LOG=info cargo run`
@@ -23,14 +24,19 @@ fn main() {
     // creates an ExecutorEnvBuilder. When you're done adding input, call
     // ExecutorEnvBuilder::build().
 
+    // Step 1: Read the files into byte arrays
+    let balance_txt = fs::read("balance.txt").expect("Failed to read balance.txt");
+    // let balance_sig = fs::read("balance.txt.sig").expect("Failed to read balance.txt.sig");
+    // let bank_public_key = fs::read("bank_public_key.pem").expect("Failed to read bank_public_key.pem");
+
+    
     // For example:
-    let input: u32 = 15 * u32::pow(2, 27) + 1;
+    // Step 2: Create the environment with input data
     let env = ExecutorEnv::builder()
-        .write(&input)
+        .write(&balance_txt)          // Write the challenge (balance.txt) to the environment
         .unwrap()
         .build()
         .unwrap();
-
     // Obtain the default prover.
     let prover = default_prover();
 
@@ -45,8 +51,12 @@ fn main() {
 
     // TODO: Implement code for retrieving receipt journal here.
 
-    // For example:
-    let _output: u32 = receipt.journal.decode().unwrap();
+    let output: Vec<u8> = receipt.journal.decode().unwrap();
+    let output_string = String::from_utf8(output)
+    .expect("Failed to convert bytes to string");
+    // let decoded_output = from_utf8(&output).unwrap();
+    println!("Decoded journal output: {}", output_string);
+    
 
     // The receipt was verified at the end of proving, but the below code is an
     // example of how someone else could verify this receipt.
