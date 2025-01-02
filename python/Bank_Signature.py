@@ -3,9 +3,9 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric.utils import Prehashed
 import base64
 
-# Generate a public private key pair using Elliptic Curve Cryptography (ECC)
+# Generate a public private key pair using Elliptic Curve Cryptography (ECC) SECP256K1
 def generate_keys():
-    private_key = ec.generate_private_key(ec.SECP256R1())
+    private_key = ec.generate_private_key(ec.SECP256K1())
     public_key = private_key.public_key()
     return private_key, public_key
 
@@ -30,10 +30,9 @@ def save_key_to_file(key, file_path, is_private=False):
 def create_and_sign_file(banks_private_key, clients_public_key, clients_balance, file_path):
     # Generate the text content
     text = f"Balance: {clients_balance}\nPublic Key: {clients_public_key.public_bytes(serialization.Encoding.PEM, serialization.PublicFormat.SubjectPublicKeyInfo).decode()}"
-    
     # Save the text content to a file
-    with open(file_path, "w") as f:
-        f.write(text)
+    with open(file_path, "wb") as f:
+        f.write(text.encode())
     
     # Sign the file content
     signature = banks_private_key.sign(
@@ -57,3 +56,4 @@ save_key_to_file(alice_private_key, "alice_private_key.pem", is_private=True)
 
 
 create_and_sign_file(bank_private_key, alice_public_key, 100, "balance.txt")
+
