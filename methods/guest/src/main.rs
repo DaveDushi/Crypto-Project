@@ -6,10 +6,13 @@ fn main() {
     // TODO: Implement your guest code here
 
     // read the input
-    let (signature, verifying_key): (Signature, EncodedPoint)= env::read();
+    let (signature, encoded_verifying_key, message): (Signature, EncodedPoint, &[u8])= env::read();
 
-    // TODO: do something with the input
-    let message = "hello";
-    // write public output to the journal
+    
+    let verifying_key = VerifyingKey::from_encoded_point(&encoded_verifying_key).unwrap();
+    verifying_key
+        .verify(&message, &signature)
+        .expect("ECDSA signature verification failed");
+
     env::commit(&message);
 }

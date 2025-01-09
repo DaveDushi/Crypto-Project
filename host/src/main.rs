@@ -38,7 +38,7 @@ fn main() {
     let ecdsa_signature = sign_message(&ecdsa_signing_key, message);
     println!("{}", encode(ecdsa_signing_key.to_bytes()));
     
-    let input = (ecdsa_signature, ecdsa_verifying_key.to_encoded_point(false));
+    let input = (ecdsa_signature, ecdsa_verifying_key.to_encoded_point(false), message);
     println!("{:?}",input);
     // Create the environment with input data
     let env = ExecutorEnv::builder()
