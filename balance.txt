@@ -1,5 +1,0 @@
-Balance: 100
-Public Key: -----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERr5YgonPnYuqjS2V4yh6VxrV+zRF
-a5VmvdXM/zD4kjDYdbEC5O/+1xDyjlCZnf74R9KKpJIO2EseTpaBFtUlzw==
------END PUBLIC KEY-----

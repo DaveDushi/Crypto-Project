@@ -33,7 +33,9 @@ if __name__ == "__main__":
     print(f"Signature: {signature.hex()}")
     print(message.decode())
 
+    # a ECC public key
     public_key = serialization.load_pem_public_key(public_key_byte)
+
     # Verify the signature
     is_valid = verify_signature(public_key, message.decode(), signature)
     if is_valid:
